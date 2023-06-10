@@ -1,10 +1,15 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { nanoid } from 'nanoid';
+import { addContact } from '../reducers/phonebookSlice';
 import s from '../Phonebook.module.css';
 
-export const Phonebook = ({ contacts, onNewContact }) => {
+export const Phonebook = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const contacts = useSelector(state => state.contacts);
+  const dispatch = useDispatch();
+
   const handleChange = e => {
     const { name, value } = e.target;
     if (name === 'name') {
@@ -24,7 +29,7 @@ export const Phonebook = ({ contacts, onNewContact }) => {
       alert('Contact with the same name already exists!');
     } else {
       const contact = { id: nanoid(), name, number };
-      onNewContact(contact);
+      dispatch(addContact(contact));
       setName('');
       setNumber('');
     }
@@ -39,6 +44,7 @@ export const Phonebook = ({ contacts, onNewContact }) => {
         pattern="^[a-zA-Zа-яА-Я]+(([ '\-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
         title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
         required
+        value={name}
         onChange={handleChange}
         className={s.Input}
       />
@@ -47,6 +53,7 @@ export const Phonebook = ({ contacts, onNewContact }) => {
         type="tel"
         name="number"
         required
+        value={number}
         onChange={handleChange}
         className={s.Input}
       />

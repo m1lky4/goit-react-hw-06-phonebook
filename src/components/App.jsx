@@ -1,47 +1,10 @@
-import { useState, useEffect } from 'react';
-import { Contacts } from './Contacts/Contacts';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { Phonebook } from './Phonebook/Phonebook';
+import { Contacts } from './Contacts/Contacts';
 
 export const App = () => {
-  const [contacts, setContacts] = useState(
-    JSON.parse(localStorage.getItem('contacts')) ?? []
-  );
-  const [filter, setFilter] = useState('');
-
-  useEffect(() => {
-    const savedContacts = localStorage.getItem('contacts');
-    if (savedContacts) {
-      setContacts(JSON.parse(savedContacts));
-    }
-  }, []);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('contacts', JSON.stringify(contacts));
-    } catch (error) {
-      console.error(error.message);
-    }
-  }, [contacts]);
-
-  const handleParentStateChange = newContact => {
-    setContacts(prevContacts => [...prevContacts, newContact]);
-  };
-
-  const handleFilterChange = e => {
-    setFilter(e.target.value);
-  };
-
-  const getFilteredContacts = contacts.filter(({ name }) =>
-    name.toLowerCase().includes(filter.toLowerCase())
-  );
-
-  const handleDeleteContact = contactId => {
-    const updatedContacts = contacts.filter(
-      contact => contact.id !== contactId
-    );
-    setContacts(updatedContacts);
-  };
-
+  const contacts = useSelector(state => state.contacts);
   return (
     <div
       style={{
@@ -54,12 +17,8 @@ export const App = () => {
         color: '#010101',
       }}
     >
-      <Phonebook onNewContact={handleParentStateChange} contacts={contacts} />
-      <Contacts
-        filteredContacts={getFilteredContacts}
-        handleFilterChange={handleFilterChange}
-        onDeleteContact={handleDeleteContact}
-      />
+      <Phonebook contacts={contacts} />
+      <Contacts />
     </div>
   );
 };
