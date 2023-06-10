@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { nanoid } from 'nanoid';
-import { addContact } from '../reducers/phonebookSlice';
+import { addContact } from '../../redux/phonebookSlice';
 import s from '../Phonebook.module.css';
 
 export const Phonebook = () => {

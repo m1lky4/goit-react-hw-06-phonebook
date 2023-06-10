@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteContact, updateFilter } from '../reducers/phonebookSlice';
+import { deleteContact, updateFilter } from '../../redux/phonebookSlice';
 import s from '../Phonebook.module.css';
 
 export const Contacts = () => {
